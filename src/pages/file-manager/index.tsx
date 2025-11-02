@@ -1,5 +1,6 @@
 import { FileTable } from "@/components/file-manager/FileTable";
 import FolderList from "@/components/file-manager/FolderList";
+import { StatList } from "@/components/file-manager/StatList";
 import { StorageOverview } from "@/components/file-manager/StorageOverview";
 import { UploadButton } from "@/components/file-manager/UploadButton";
 import { MetaData } from "@/components/MetaData";
@@ -47,6 +48,9 @@ const FileApp = () => {
               </div>
               <UploadButton />
             </div>
+          </div>
+          <div className="mt-6">
+            <StatList />
           </div>
           <h3 className="mt-6 font-medium">Folders</h3>
           <div className="mt-3">
