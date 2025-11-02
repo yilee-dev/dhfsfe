@@ -3,13 +3,19 @@ import { FileTableRow, type IFileTableRow } from "./FileTableRow";
 import { useGetFolderId } from "./FolderList";
 import { useFileList } from "@/hooks/useFileList";
 import { useEffect } from "react";
+import { useLoaderData } from "react-router";
+import { useLocation } from "react-router";
 
 type FileListProps = {
   folderId?: number;
 };
 
 export const FileTable = ({ folderId = 1 }: FileListProps) => {
-  const id = useGetFolderId(folderId);
+  const location = useLocation();
+  const isRoot = location.pathname === "/";
+
+  const effectiveDefault = isRoot ? null : folderId;
+  const id = useGetFolderId(effectiveDefault);
 
   const [ref, inView] = useInView();
 

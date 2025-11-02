@@ -3,19 +3,27 @@ import { useFolderList, type IFolder } from "@/hooks/useFolderList";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FolderItem } from "./FolderItem";
+import { useLocation } from "react-router";
 
 export type FolderListProps = {
-  folderId?: number;
+  folderId?: number | null;
 };
 
-export const useGetFolderId = (defaultFolderId: number): number => {
+export const useGetFolderId = (
+  defaultFolderId: number | null
+): number | null => {
+  if (!defaultFolderId) return null;
   const params = useParams<{ id?: string }>();
-  const id = Number(params.id);
-  return Number.isFinite(id) ? id : defaultFolderId;
+  const fromUrl = params.id ? Number(params.id) : NaN;
+  return Number.isFinite(fromUrl) ? fromUrl : defaultFolderId;
 };
 
-const FolderList = ({ folderId = 1 }: FolderListProps) => {
-  const id = useGetFolderId(folderId);
+const FolderList = ({ folderId = null }: FolderListProps) => {
+  const location = useLocation();
+  const isRoot = location.pathname === "/";
+
+  const effectiveDefault = isRoot ? null : folderId;
+  const id = useGetFolderId(effectiveDefault);
 
   const [ref, inView] = useInView();
 

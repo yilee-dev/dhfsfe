@@ -3,14 +3,9 @@ import { type ReactNode } from "react";
 
 export const FileTableRow = ({
   id,
-  folderId,
   originalFilename,
-  storeFilename,
-  ext,
-  createdAt,
-  updatedAt,
   fileSize,
-  contentType,
+  fileType,
 }: Partial<IFile>) => {
   return (
     <tr className="hover:bg-base-200">
@@ -28,9 +23,7 @@ export const FileTableRow = ({
         <div className="text-sm font-medium">{originalFilename}</div>
       </td>
       <td>{fileSize}</td>
-      <td>{updatedAt}</td>
-      <td>{}</td>
-      <td>{}</td>
+      <td>{fileType}</td>
       <td>
         <button
           className="btn btn-ghost btn-square btn-sm"

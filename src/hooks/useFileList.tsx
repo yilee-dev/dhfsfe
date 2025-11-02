@@ -4,17 +4,8 @@ import axios from "axios";
 export type IFile = {
   id: number;
   originalFilename: string;
-  storeFilename: string;
-  contentType: string;
   fileSize: number;
-  folderId: number;
-  uploadedById: number;
-  version: number;
-  deleted: boolean;
-  ext: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
+  fileType: "NORMAL" | "INSTALL" | "UNINSTALL";
 };
 
 type ICursorFilePageResponse = {
@@ -26,51 +17,43 @@ type ICursorFilePageResponse = {
 
 type ICursorQueryParam = {
   folderId: number;
-  fileCursor: number | null;
-  fileSize: number;
+  cursor: number | null;
+  size: number;
 };
 
 const getFileListInFolder = async ({
   folderId,
-  fileCursor,
-  fileSize,
+  cursor,
+  size,
 }: ICursorQueryParam): Promise<ICursorFilePageResponse> => {
   const params = new URLSearchParams();
+  params.append("folderId", String(folderId));
 
-  const rootFolderId = 1;
-  const defaultSize = 20;
-
-  folderId
-    ? params.append("folderId", String(folderId))
-    : params.append("folderId", String(rootFolderId));
-
-  fileCursor && params.append("fileCursor", String(fileCursor));
-
-  fileSize
-    ? params.append("fileSize", String(fileSize))
-    : params.append("fileSize", String(defaultSize));
+  if (cursor != null) params.append("cursor", String(cursor));
+  params.append("size", String(size));
 
   const res = await axios.get(
     `${import.meta.env.VITE_API_SERVER_HOST}/api/files?${params.toString()}`
   );
 
-  return res.data;
+  return res.data as ICursorFilePageResponse;
 };
 
-export const useFileList = (folderId: number, fileSize: number = 20) => {
+export const useFileList = (folderId: number | null, fileSize: number = 20) => {
   return useInfiniteQuery<
     ICursorFilePageResponse,
     Error,
     InfiniteData<ICursorFilePageResponse>,
-    [string, ICursorQueryParam["folderId"], ICursorQueryParam["fileSize"]],
+    [string, number | null, number],
     undefined | number
   >({
     queryKey: ["file-list", folderId, fileSize],
+    enabled: folderId !== null,
     queryFn: ({ pageParam }) => {
       return getFileListInFolder({
-        folderId,
-        fileCursor: pageParam ?? null,
-        fileSize,
+        folderId: folderId as number,
+        cursor: pageParam ?? null,
+        size: fileSize,
       });
     },
     initialPageParam: undefined,

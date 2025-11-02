@@ -5,29 +5,21 @@ export type IFolder = {
   id: number;
   name: string;
   parentId: number | null;
-  createdById: number;
-  deleted: boolean;
+  ownerId: number;
+  scope: "PRIVATE" | "SHARED";
   createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
-};
-
-export type ICurrentFolder = {
-  id: IFolder["id"];
-  name: IFolder["name"];
-  parentId: IFolder["parentId"];
-  permissions: string[];
-  fileCount?: number;
+  updatedAt: string | null;
+  deletedAt?: string | null;
+  isDeleted: boolean;
 };
 
 type CursorParam = {
-  id: IFolder["id"];
+  id: IFolder["parentId"];
   cursor: number | null;
   size: number;
 };
 
 type ICursorFolderPageResponse = {
-  current: ICurrentFolder;
   items: IFolder[];
   nextCursor: CursorParam["cursor"];
   hasNextCursor: boolean;
@@ -43,21 +35,20 @@ const getFolderWithChildFolder = async ({
   if (cursor) params.append("folderCursor", String(cursor));
   params.append("folderSize", String(size));
 
+  const path = id === null ? "/api/folders" : `/api/folders/${id}`;
   const res = await axios.get(
-    `${
-      import.meta.env.VITE_API_SERVER_HOST
-    }/api/folders/${id}?${params.toString()}`
+    `${import.meta.env.VITE_API_SERVER_HOST}${path}?${params.toString()}`
   );
 
-  return res.data;
+  return res.data as ICursorFolderPageResponse;
 };
 
-export const useFolderList = (id: number, size: number = 20) => {
+export const useFolderList = (id: number | null, size: number = 20) => {
   return useInfiniteQuery<
     ICursorFolderPageResponse,
     Error,
     InfiniteData<ICursorFolderPageResponse>,
-    [string, number, number],
+    [string, number | null, number],
     undefined | number
   >({
     queryKey: ["folder-list", id, size],
