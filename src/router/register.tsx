@@ -22,6 +22,18 @@ const appRoutes: IRoutesProps[] = [
   },
 ];
 
+const authRoutes: IRoutesProps[] = [
+  {
+    path: "/sign-in",
+    element: cw(lazy(() => import("@/pages/auth/sign-in"))),
+  },
+  {
+    path: "/sign-up",
+    element: cw(lazy(() => import("@/pages/auth/sign-up"))),
+  },
+];
+
 export const registerRoutes = {
+  auth: [...authRoutes],
   file: [...appRoutes],
 };

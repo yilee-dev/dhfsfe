@@ -19,6 +19,15 @@ const Router = (props: RouteProps) => {
           />
         ))}
       </Route>
+      <Route>
+        {registerRoutes.auth.map((route, index) => (
+          <Route
+            key={"auth-" + index}
+            path={route.path}
+            element={<Suspense>{route.element}</Suspense>}
+          />
+        ))}
+      </Route>
     </Routes>
   );
 };

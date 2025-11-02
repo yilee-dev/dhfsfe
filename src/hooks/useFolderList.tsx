@@ -44,7 +44,9 @@ const getFolderWithChildFolder = async ({
   params.append("folderSize", String(size));
 
   const res = await axios.get(
-    `http://localhost:8080/api/folders/${id}?${params.toString()}`
+    `${
+      import.meta.env.VITE_API_SERVER_HOST
+    }/api/folders/${id}?${params.toString()}`
   );
 
   return res.data;

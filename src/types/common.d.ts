@@ -1,52 +1,40 @@
-import { AxiosError } from "axios"
-
+import { AxiosError } from "axios";
 
 interface ResultModal {
-
-  title:string,
-  content: string,
-  callbackFn? :  () => void 
-
+  title: string;
+  content: string;
+  callbackFn?: () => void;
 }
 
-
-
-interface MemberEmail {
-
-  email: string 
-
+interface MemberUsername {
+  username: string;
 }
 
 interface LoginForm {
-
-  email:string,
-  pw:string,
-  nickname ? : string
-
+  username: string;
+  password: string;
 }
 
 interface LoginResponse {
-  email: string,
-  nickname: string,
-  social:boolean,
-  pw:string,
-  accessToken:string,
-  roleNames: string[],
-  refreshToken: string,
-  error?: string
+  id: number;
+  username: string;
+  nickname: string;
+  roles: string[];
+  joinDate: string;
+  isDisabled: boolean;
+  disabledAt: string;
+  accessToken: string;
+  refreshToken: string;
+  errors?: string;
 }
-
-
 
 interface UseCustomLoginReturn {
-  loginState:MemberEmail,
-  isLogin: boolean,
-  doLogin: (param: LoginForm) => Promise<LoginResponse>,
-  doLogout: () => void,
-  moveToPath: (path:string) => void,
-  moveToLogin: () => void,
-  moveToLoginReturn: () => JSX.Element,
-  exceptionHandle: (ex:any) => void
+  loginState: MemberEmail;
+  isLogin: boolean;
+  doLogin: (param: LoginForm) => Promise<LoginResponse>;
+  doLogout: () => void;
+  moveToPath: (path: string) => void;
+  moveToLogin: () => void;
+  moveToLoginReturn: () => JSX.Element;
+  exceptionHandle: (ex: any) => void;
 }
-
-

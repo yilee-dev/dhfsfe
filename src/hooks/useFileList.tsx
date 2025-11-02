@@ -51,7 +51,7 @@ const getFileListInFolder = async ({
     : params.append("fileSize", String(defaultSize));
 
   const res = await axios.get(
-    `http://localhost:8080/api/files?${params.toString()}`
+    `${import.meta.env.VITE_API_SERVER_HOST}/api/files?${params.toString()}`
   );
 
   return res.data;
