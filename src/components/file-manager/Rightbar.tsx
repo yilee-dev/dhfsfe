@@ -6,25 +6,14 @@ const fontFamilies: {
   className?: string;
 }[] = [
   {
-    value: "dm-sans",
-    label: "DM Sans",
-    className: "group-[[data-font-family=dm-sans]]/html:bg-base-200",
+    value: "default",
+    label: "Noto Sans KR",
+    className: "group-[[data-font-family=Noto Sans KR]]/html:bg-base-200",
   },
   {
-    value: "wix",
-    label: "Wix",
-    className: "group-[[data-font-family=wix]]/html:bg-base-200",
-  },
-  {
-    value: "inclusive",
-    label: "Inclusive",
-    className:
-      "group-[[data-font-family=inclusive]]/html:bg-base-200 group-[:not([data-font-family])]/html:bg-base-200",
-  },
-  {
-    value: "ar-one",
-    label: "AR One",
-    className: "group-[[data-font-family=ar-one]]/html:bg-base-200",
+    value: "roboto",
+    label: "Roboto",
+    className: "group-[[data-font-family=roboto]]/html:bg-base-200",
   },
 ];
 
@@ -212,12 +201,7 @@ export const Rightbar = () => {
               </div>
             </div>
             <div className="pointer-events-none opacity-50 group-data-[theme=contrast]/html:pointer-events-auto group-data-[theme=contrast]/html:opacity-100 group-data-[theme=light]/html:pointer-events-auto group-data-[theme=light]/html:opacity-100">
-              <p className="mt-6 font-medium">
-                Sidebar
-                <span className="ms-1 inline text-xs group-data-[theme=contrast]/html:hidden group-data-[theme=light]/html:hidden md:text-sm">
-                  (*Only available in light, contrast themes)
-                </span>
-              </p>
+              <p className="mt-6 font-medium">Sidebar</p>
               <div className="mt-3 grid grid-cols-2 gap-3">
                 <div
                   className="border-base-300 hover:bg-base-200 rounded-box group-data-[sidebar-theme=light]/html:bg-base-200 inline-flex cursor-pointer items-center justify-center gap-2 border p-2"

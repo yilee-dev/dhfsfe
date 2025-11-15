@@ -1,9 +1,14 @@
 import { FileTable } from "@/components/file-manager/FileTable";
+import { FolderCreateForm } from "@/components/file-manager/FolderCreateForm";
 import FolderList from "@/components/file-manager/FolderList";
 import { StatList } from "@/components/file-manager/StatList";
 import { StorageOverview } from "@/components/file-manager/StorageOverview";
 import { UploadButton } from "@/components/file-manager/UploadButton";
 import { MetaData } from "@/components/MetaData";
+import useCustomLogin from "@/hooks/useCustomLogin";
+import { useState } from "react";
+import { useLocation } from "react-router";
+import { useParams } from "react-router";
 
 export type IBreadcrumb = {
   folderId: number;
@@ -11,6 +16,18 @@ export type IBreadcrumb = {
 };
 
 const FileApp = () => {
+  const { loginState } = useCustomLogin();
+  const params = useParams<{ id?: string }>();
+  const location = useLocation();
+
+  const [openCreate, setOpenCreate] = useState(false);
+  const folderId = params.id ? Number(params.id) : null;
+  const isRoot = location.pathname === "/";
+
+  const canCreateFolder = Array.isArray(loginState.roles)
+    ? loginState.roles.includes("MANAGER") || loginState.roles.includes("ADMIN")
+    : false;
+
   return (
     <>
       <MetaData title="File Manager App" />
@@ -18,7 +35,7 @@ const FileApp = () => {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3 2xl:grid-cols-4 overflow-y-auto">
         <div className="col-span-1 xl:col-span-2 2xl:col-span-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium">File Manager</h3>
+            <h3 className="text-lg font-medium"></h3>
             <div className="inline-flex items-center gap-3">
               <div className="drawer drawer-end">
                 <input
@@ -46,15 +63,35 @@ const FileApp = () => {
                   </div>
                 </div>
               </div>
-              <UploadButton />
+              {/* <UploadButton /> */}
             </div>
           </div>
           <div className="mt-6">
             <StatList />
           </div>
-          <h3 className="mt-6 font-medium">Folders</h3>
+          <div className="flex justify-between items-center relative">
+            <h3 className="font-medium">
+              {isRoot ? "루트 디렉터리" : `폴더 #${folderId}`}
+            </h3>
+            {canCreateFolder && (
+              <button
+                onClick={() => setOpenCreate(true)}
+                className="btn btn-sm btn-outline border-base-300"
+              >
+                <span className="iconify lucide--folder-plus size-4"></span>
+              </button>
+            )}
+            {openCreate && (
+              <div className="absolute right-0 top-full mt-2 z-50">
+                <FolderCreateForm
+                  parentId={folderId ?? null}
+                  onClose={() => setOpenCreate(false)}
+                />
+              </div>
+            )}
+          </div>
           <div className="mt-3">
-            <FolderList />
+            <FolderList folderId={folderId} />
           </div>
           <h3 className="mt-6 font-medium">Files</h3>
           <div className="mt-3">

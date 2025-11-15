@@ -31,7 +31,6 @@ export const Topbar = () => {
         <TopbarSearchButton />
       </div>
       <div className="inline-flex items-center gap-0.5">
-        <TopbarLanguageMenu />
         <ThemeToggle className="btn btn-sm btn-circle btn-ghost" />
         <label
           htmlFor="layout-rightbar-drawer"

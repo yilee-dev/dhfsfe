@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useInfiniteQuery, type InfiniteData } from "@tanstack/react-query";
+import { apiGet } from "@/api/apiClient";
 
 export type IFolder = {
   id: number;
@@ -11,56 +11,39 @@ export type IFolder = {
   updatedAt: string | null;
   deletedAt?: string | null;
   isDeleted: boolean;
-};
-
-type CursorParam = {
-  id: IFolder["parentId"];
-  cursor: number | null;
-  size: number;
+  directFileCount: number; // ✅ 직접 파일 개수
+  directFolderCount: number; // ✅ 직접 폴더 개수
 };
 
 type ICursorFolderPageResponse = {
   items: IFolder[];
-  nextCursor: CursorParam["cursor"];
+  nextCursor: number | null;
   hasNextCursor: boolean;
   size: number;
 };
 
-const getFolderWithChildFolder = async ({
-  id,
-  cursor,
-  size,
-}: CursorParam): Promise<ICursorFolderPageResponse> => {
-  const params = new URLSearchParams();
-  if (cursor) params.append("folderCursor", String(cursor));
-  params.append("folderSize", String(size));
-
-  const path = id === null ? "/api/folders" : `/api/folders/${id}`;
-  const res = await axios.get(
-    `${import.meta.env.VITE_API_SERVER_HOST}${path}?${params.toString()}`
-  );
-
-  return res.data as ICursorFolderPageResponse;
-};
-
-export const useFolderList = (id: number | null, size: number = 20) => {
+export const useFolderList = (parentId: number | null, size: number = 20) => {
   return useInfiniteQuery<
     ICursorFolderPageResponse,
     Error,
     InfiniteData<ICursorFolderPageResponse>,
     [string, number | null, number],
-    undefined | number
+    number | undefined
   >({
-    queryKey: ["folder-list", id, size],
-    queryFn: ({ pageParam }) =>
-      getFolderWithChildFolder({
-        id,
-        cursor: pageParam ?? null,
-        size,
-      }),
-    initialPageParam: undefined,
-    getNextPageParam: (lastPage) => {
-      return lastPage.hasNextCursor ? lastPage.nextCursor : null;
+    queryKey: ["folder-list", parentId ?? null, size],
+    queryFn: async ({ pageParam }) => {
+      const params = new URLSearchParams();
+      if (pageParam != null) params.append("folderCursor", String(pageParam));
+      params.append("folderSize", String(size));
+
+      const path =
+        parentId == null ? "/api/folders" : `/api/folders/${parentId}`;
+      return await apiGet<ICursorFolderPageResponse>(
+        `${path}?${params.toString()}`
+      );
     },
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNextCursor ? lastPage.nextCursor ?? undefined : undefined,
   });
 };

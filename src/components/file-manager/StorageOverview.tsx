@@ -6,9 +6,6 @@ export const StorageOverview = () => {
       <div className="card-body gap-0">
         <div className="flex items-center justify-between">
           <p className="font-medium">Overview</p>
-          <button className="btn btn-success btn-outline btn-sm border-transparent">
-            Upgrade Now
-          </button>
         </div>
         <div className="card card-border bg-primary/5 border-primary/10 mt-3">
           <div className="card-body p-4">

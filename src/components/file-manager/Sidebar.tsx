@@ -9,8 +9,11 @@ import { useConfig } from "@/contexts/config";
 
 import { type ISidebarMenuItem, SidebarMenuItem } from "./SidebarMenuItem";
 import { getActivatedItemParentKeys } from "./helpers";
+import useCustomLogin from "@/hooks/useCustomLogin";
 
 export const Sidebar = ({ menuItems }: { menuItems: ISidebarMenuItem[] }) => {
+  const { isLogin, loginState } = useCustomLogin();
+
   const { pathname } = useLocation();
   const { calculatedSidebarTheme } = useConfig();
   const scrollRef = useRef<SimpleBarCore | null>(null);
@@ -113,64 +116,45 @@ export const Sidebar = ({ menuItems }: { menuItems: ISidebarMenuItem[] }) => {
           </SimpleBar>
           <div className="from-base-100/60 pointer-events-none absolute start-0 end-0 bottom-0 h-7 bg-linear-to-t to-transparent"></div>
         </div>
-
-        <div className="mb-2">
-          <hr className="border-base-300 my-2 border-dashed" />
-          <div className="dropdown dropdown-top dropdown-end w-full">
-            <div
-              tabIndex={0}
-              role="button"
-              className="bg-base-200 hover:bg-base-300 rounded-box mx-2 mt-0 flex cursor-pointer items-center gap-2.5 px-3 py-2 transition-all"
-            >
-              <div className="avatar">
-                <div className="bg-base-200 mask mask-squircle w-8">
-                  <img src="/images/avatars/1.png" alt="Avatar" />
+        {isLogin ? (
+          <div className="mb-2">
+            <hr className="border-base-300 my-2 border-dashed" />
+            <div className="dropdown dropdown-top dropdown-end w-full">
+              <div
+                tabIndex={0}
+                role="button"
+                className="bg-base-200 hover:bg-base-300 rounded-box mx-2 mt-0 flex cursor-pointer items-center gap-2.5 px-3 py-2 transition-all"
+              >
+                <div className="grow -space-y-0.5">
+                  <p className="text-sm font-medium">
+                    <span className="iconify lucide--user-star size-6 text-base-content/60"></span>
+                  </p>
                 </div>
+                <span className="iconify lucide--chevrons-up-down text-base-content/60 size-4" />
               </div>
-              <div className="grow -space-y-0.5">
-                <p className="text-sm font-medium">Denish N</p>
-                <p className="text-base-content/60 text-xs">@withden</p>
-              </div>
-              <span className="iconify lucide--chevrons-up-down text-base-content/60 size-4" />
+              <ul
+                role="menu"
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box shadow-base-content/4 mb-1 w-48 p-1 shadow-[0px_-10px_40px_0px]"
+              >
+                <li>
+                  <Link to="/pages/settings">
+                    <span className="iconify lucide--user size-4" />
+                    <span>프로필</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/pages/settings">
+                    <span className="iconify lucide--settings size-4" />
+                    <span>설정</span>
+                  </Link>
+                </li>
+              </ul>
             </div>
-            <ul
-              role="menu"
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box shadow-base-content/4 mb-1 w-48 p-1 shadow-[0px_-10px_40px_0px]"
-            >
-              <li>
-                <Link to="/pages/settings">
-                  <span className="iconify lucide--user size-4" />
-                  <span>My Profile</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/pages/settings">
-                  <span className="iconify lucide--settings size-4" />
-                  <span>Settings</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/pages/get-help">
-                  <span className="iconify lucide--help-circle size-4" />
-                  <span>Help</span>
-                </Link>
-              </li>
-              <li>
-                <div>
-                  <span className="iconify lucide--bell size-4" />
-                  <span>Notification</span>
-                </div>
-              </li>
-              <li>
-                <div>
-                  <span className="iconify lucide--arrow-left-right size-4" />
-                  <span>Switch Account</span>
-                </div>
-              </li>
-            </ul>
           </div>
-        </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <label

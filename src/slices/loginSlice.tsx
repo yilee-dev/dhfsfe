@@ -16,7 +16,7 @@ const initState: MemberUsername = {
 
 const loadMemberCookie = () => {
   const memberInfo = getCookie("member");
-  if (!memberInfo) return memberInfo;
+  return memberInfo;
 };
 
 const loginSlice = createSlice({

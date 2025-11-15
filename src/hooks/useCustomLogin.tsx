@@ -21,8 +21,7 @@ const useCustomLogin = (): UseCustomLoginReturn => {
   const isLogin = loginState.username ? true : false; //----------로그인 여부
 
   const doLogin = async (param: LoginForm) => {
-    // loginPostAsync 액션을 디스패치하고 결과를 받기
-    const loginResponse = dispatch(loginPostAsync(param)).unwrap();
+    const loginResponse = await dispatch(loginPostAsync(param)).unwrap();
 
     return loginResponse;
   };
@@ -53,7 +52,7 @@ const useCustomLogin = (): UseCustomLoginReturn => {
 
     console.log(ex);
 
-    if (ex.code === "ERR_REQUIRE_LOGIN") {
+    if (ex?.code === "ERR_REQUIRE_LOGIN") {
       navigate({ pathname: "/member/login" });
       return;
     }

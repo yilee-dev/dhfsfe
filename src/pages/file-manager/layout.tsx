@@ -9,9 +9,9 @@ const FileAppLayout = ({ children }: { children: ReactNode }) => {
     <div className="size-full">
       <div className="flex">
         <Sidebar menuItems={fileManagerMenus} />
-        <div className="flex h-screen min-w-0 grow flex-col overflow-auto">
+        <div className="flex h-screen min-w-0 min-h-screen grow flex-col overflow-y-scroll">
           <Topbar />
-          <div id="layout-content" className="overflow-hidden py-4">
+          <div id="layout-content" className="py-4">
             {children}
           </div>
         </div>

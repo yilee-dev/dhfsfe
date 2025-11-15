@@ -34,10 +34,10 @@ function LoginComponent() {
   };
 
   return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+    <div className="flex justify-center items-center flex-col max-w-1/3 w-1/3 border-2 border-sky-200 mt-10 m-2 p-4">
       <div className="flex justify-center">
         <div className="text-4xl m-4 p-4 font-extrabold text-blue-500">
-          Login Component
+          Login
         </div>
       </div>
       <div className="flex justify-center">

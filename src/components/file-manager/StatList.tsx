@@ -1,35 +1,6 @@
 import { type IStatItem, StatItem } from "./StatItem";
 
-const statItems: IStatItem[] = [
-  {
-    image: "/images/apps/files/one-drive.svg",
-    name: "One Drive",
-    used: 85,
-    total: 250,
-    progressClass: "progress-primary",
-  },
-  {
-    image: "/images/apps/files/google-drive.svg",
-    name: "Google Drive",
-    used: 56,
-    total: 100,
-    progressClass: "progress-warning",
-  },
-  {
-    image: "/images/apps/files/mega.svg",
-    name: "Mega",
-    used: 126,
-    total: 150,
-    progressClass: "progress-error",
-  },
-  {
-    image: "/images/apps/files/dropbox.svg",
-    name: "Dropbox",
-    used: 22,
-    total: 40,
-    progressClass: "progress-info",
-  },
-];
+const statItems: IStatItem[] = [];
 
 export const StatList = () => {
   return (

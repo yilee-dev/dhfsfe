@@ -25,7 +25,7 @@ export type IConfig = {
   theme: ITheme;
   direction: "ltr" | "rtl";
   sidebarTheme: "light" | "dark";
-  fontFamily: "default" | "dm-sans" | "inclusive" | "ar-one" | "wix";
+  fontFamily: "default" | "roboto";
   fullscreen: boolean;
 };
 
@@ -39,7 +39,7 @@ const defaultConfig: IConfig = {
 
 const useHook = () => {
   const [config, setConfig] = useLocalStorage<IConfig>(
-    "__NEXUS_CONFIG_v3.0__",
+    "__CUSTOM_CONFIG",
     defaultConfig
   );
   const htmlRef = useMemo(

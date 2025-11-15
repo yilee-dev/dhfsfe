@@ -1,14 +1,14 @@
 type IMetaData = {
-    title?: string;
-    noIndex?: boolean;
+  title?: string;
+  noIndex?: boolean;
 };
 
 export const MetaData = ({ title, noIndex }: IMetaData) => {
-    return (
-        <>
-            <title>{`${title ? title + " |" : ""} Nexus - Admin & Client Dashboard`}</title>
+  return (
+    <>
+      <title>{`DONGHEE - ${title ? title + " |" : ""}`}</title>
 
-            {noIndex && <meta name="robots" content="noindex" data-rh="true" />}
-        </>
-    );
+      {noIndex && <meta name="robots" content="noindex" data-rh="true" />}
+    </>
+  );
 };
